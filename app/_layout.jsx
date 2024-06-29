@@ -1,7 +1,7 @@
-import { Text } from 'react-native'
-import { Slot, Stack, SplashScreen } from 'expo-router'
+import { Stack, SplashScreen } from 'expo-router'
 import { useFonts } from 'expo-font'
 import { useEffect } from 'react'
+import AuthProvider from '@/context/AuthProvider'
 import 'react-native-url-polyfill/auto'
 
 SplashScreen.preventAutoHideAsync()
@@ -32,34 +32,36 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{
-          headerShown: false,
-        }}
-      />
+    <AuthProvider>
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{
+            headerShown: false,
+          }}
+        />
 
-      <Stack.Screen
-        name="(auth)"
-        options={{
-          headerShown: false,
-        }}
-      />
+        <Stack.Screen
+          name="(auth)"
+          options={{
+            headerShown: false,
+          }}
+        />
 
-      <Stack.Screen
-        name="(tabs)"
-        options={{
-          headerShown: false,
-        }}
-      />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+          }}
+        />
 
-      {/* <Stack.Screen
+        {/* <Stack.Screen
         name="/search/[query]"
         options={{
           headerShown: false,
         }}
       /> */}
-    </Stack>
+      </Stack>
+    </AuthProvider>
   )
 }

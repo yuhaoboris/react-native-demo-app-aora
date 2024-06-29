@@ -6,6 +6,7 @@ import CustomButton from '@/components/CustomButton'
 import { images } from '@/constants'
 import { Link, router } from 'expo-router'
 import { createUser } from '@/lib/appwrite'
+import { useAuthContext } from '@/context/AuthProvider'
 
 const Signup = () => {
   const [form, setForm] = useState({
@@ -14,6 +15,7 @@ const Signup = () => {
     password: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { setUser, setIsLoggedIn } = useAuthContext()
 
   const submit = async () => {
     if (!form.username || !form.email || !form.password) {
@@ -24,6 +26,8 @@ const Signup = () => {
 
     try {
       const result = await createUser(form.email, form.password, form.username)
+      setUser(result)
+      setIsLoggedIn(true)
 
       router.replace('/home')
     } catch (error) {
