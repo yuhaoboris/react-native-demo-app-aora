@@ -9,8 +9,10 @@ import { useState } from 'react'
 import { getAllPosts, getLatestPosts } from '@/lib/appwrite'
 import useAppWrite from '@/lib/useAppwrite'
 import VideoCard from '@/components/VideoCard'
+import { useAuthContext } from '@/context/AuthProvider'
 
 const Home = () => {
+  const { user } = useAuthContext()
   const { data: posts, refetch } = useAppWrite(getAllPosts)
   const { data: latestPosts } = useAppWrite(getLatestPosts)
   const [refreshing, setRefreshing] = useState(false)
@@ -32,7 +34,7 @@ const Home = () => {
             <View className="justify-between items-start flex-row mb-6">
               <View>
                 <Text className="font-pmedium text-sm text-gray-100">Welcome back</Text>
-                <Text className="text-2xl font-psemibold text-white">JSMaster</Text>
+                <Text className="text-2xl font-psemibold text-white">{user?.username}</Text>
               </View>
 
               <View className="mt-1.5">
