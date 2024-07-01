@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
-import * as DocumentPicker from 'expo-document-picker'
+// import * as DocumentPicker from 'expo-document-picker'
+import * as ImagePicker from 'expo-image-picker'
 import { Video, ResizeMode } from 'expo-av'
 import { router } from 'expo-router'
 
@@ -24,9 +25,23 @@ const Create = () => {
   })
 
   const openPicker = async (selectType) => {
-    const result = await DocumentPicker.getDocumentAsync({
-      type: selectType === 'image' ? ['image/png', 'image/jpg'] : ['video/mp4', 'video/gif'],
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+
+    if (status !== 'granted') {
+      return Alert.alert('No Permission', 'App have no permission to access your media library')
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes:
+        selectType === 'image'
+          ? ImagePicker.MediaTypeOptions.Images
+          : ImagePicker.MediaTypeOptions.Videos,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
     })
+
+    console.log(result)
 
     if (!result.canceled) {
       if (selectType === 'image') {
